@@ -30,6 +30,29 @@ evalStmt env (VarDeclStmt (decl:ds)) =
     varDecl env decl >> evalStmt env (VarDeclStmt ds)
 evalStmt env (ExprStmt expr) = evalExpr env expr
 
+evalStmt env (IfSingleStmt exp st) = do
+                                       resultExp <- evalExpr env exp
+                                       if((boolAux resultExp) == True) then evalStmt env st
+                                       else return Nil
+evalStmt env (IfStmt exp st1 st2) = do
+                                       resultExp <- evalExpr env exp
+                                       if((boolAux resultExp) == True) then evalStmt env st1
+                                       else evalStmt env st2
+                                                            
+evalStmt env (BlockStmt []) = return Nil
+evalStmt env (BlockStmt (h:t)) = do
+                                   v1 <- evalStmt env h
+                                   evalStmt env (BlockStmt t) 
+ --   let (v1,e1) =                                                             
+boolAux (Bool b) = b
+boolAux (Int i) | i == 0 = False
+                | otherwise = True
+boolAux (Var x) | x == "" = False
+                | otherwise = True;
+boolAux (String s) | s == "" = False
+                   | otherwise = True            
+
+
 -- Do not touch this one :)
 evaluate :: StateT -> [Statement] -> StateTransformer Value
 evaluate env [] = return Nil
