@@ -43,6 +43,21 @@ evalStmt env (BlockStmt []) = return Nil
 evalStmt env (BlockStmt (h:t)) = do
                                    v1 <- evalStmt env h
                                    evalStmt env (BlockStmt t) 
+                                  
+evalStmt env (WhileStmt exp st) = do
+                                    resultExp <- evalExpr env exp
+                                    if ((boolAux resultExp) == True) then evalStmt env st >> evalStmt env (WhileStmt exp st)
+                                    else return Nil
+
+evalStmt env (DoWhileStmt st exp) = do
+                                     evalStmt env st
+                                     resultExp <- evalExpr env exp
+                                     if ((boolAux resultExp) == True) then evalStmt env (DoWhileStmt st exp)  
+                                     else return Nil 
+-- Break Não Funcionando
+--evalStmt env (BreakStmt maybeExpr) = case maybeExpr of 
+ --                                               Just id -> return 
+  --                                              Nothing -> return Nil                                  
  --   let (v1,e1) =                                                             
 boolAux (Bool b) = b
 boolAux (Int i) | i == 0 = False
