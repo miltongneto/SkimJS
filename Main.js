@@ -1,5 +1,6 @@
 var x = 0;
-while (x < 10)
+do
 {
-	break;
-}
+	continue;
+
+} while (x < 10);

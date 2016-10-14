@@ -41,10 +41,10 @@ evalStmt env (IfStmt exp st1 st2) = do
                                        else evalStmt env st2
                                                             
 evalStmt env (BlockStmt []) = return Nil
---evalStmt env (BlockStmt ((BreakStmt m):t)) = return Stop
 evalStmt env (BlockStmt (h:t)) = do
                                    v1 <- evalStmt env h
                                    if (v1 == Stop) then return Stop
+                                   else if (v1 == Continue) then return Continue
                                    else evalStmt env (BlockStmt t) 
                                   
 evalStmt env (WhileStmt exp st) = do
@@ -53,18 +53,37 @@ evalStmt env (WhileStmt exp st) = do
                                        do
                                        s <- evalStmt env st
                                        if (s == Stop) then return Nil
+                                       else if (s == Continue) then evalStmt env (WhileStmt exp st)
                                        else evalStmt env st >> evalStmt env (WhileStmt exp st)
                                     else return Nil
 
+
 evalStmt env (DoWhileStmt st exp) = do
-                                     evalStmt env st
-                                     resultExp <- evalExpr env exp
-                                     if ((boolAux resultExp) == True) then evalStmt env (DoWhileStmt st exp)  
-                                     else return Nil 
--- Break Não Funcionando
+                                     s <- evalStmt env st
+                                     if (s == Stop) then return Nil
+                                     else if (s == Continue) then evalStmt env (WhileStmt exp st)
+                                     else 
+                                       do
+                                         resultExp <- evalExpr env exp
+                                         if ((boolAux resultExp) == True) then evalStmt env (DoWhileStmt st exp)  
+                                         else return Nil 
+
+-- Verificar casos que ocorrem o break e "corrigir"
 evalStmt env (BreakStmt m) = return Stop
- --
- --   let (v1,e1) =                                                             
+
+evalStmt env (ReturnStmt (Just x)) = evalExpr env x
+evalStmt env (ReturnStmt Nothing) = return Nil
+
+evalStmt env (SwitchStmt exp []) = return Nil
+evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
+                                        resultExp <- evalExpr env exp
+                                        resultExp2 <- evalExpr env exp2
+                                        if (resultExp == resultExp2) then evalStmt env (BlockStmt lst)
+                                        else evalStmt env (SwitchStmt exp xs)
+
+evalStmt env (ContinueStmt (Just id)) = 
+evalStmt env (ContinueStmt Nothing) =
+
 boolAux (Bool b) = b
 boolAux (Int i) | i == 0 = False
                 | otherwise = True

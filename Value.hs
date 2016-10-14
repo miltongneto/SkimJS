@@ -6,6 +6,7 @@ data Value = Bool Bool
     | Var String
     | Nil
     | Stop
+    | Continue
     deriving (Eq)
 
 --
