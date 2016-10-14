@@ -83,12 +83,8 @@ evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
                                         if (resultExp == resultExp2) then evalStmt env (BlockStmt lst)
                                         else evalStmt env (SwitchStmt exp xs)
 
-<<<<<<< HEAD
-=======
 evalStmt env (ThrowStmt exp) = evalExpr env exp
- --
- --   let (v1,e1) =                                                             
->>>>>>> 74314f8316d92868b072003086f319df07c23344
+
 boolAux (Bool b) = b
 boolAux (Int i) | i == 0 = False
                 | otherwise = True
