@@ -41,6 +41,7 @@ evalStmt env (IfStmt exp st1 st2) = do
                                        else evalStmt env st2
                                                             
 evalStmt env (BlockStmt []) = return Nil
+--evalStmt env (BlockStmt ((BreakStmt m):t)) = return Stop
 evalStmt env (BlockStmt (h:t)) = do
                                    v1 <- evalStmt env h
                                    if (v1 == Stop) then return Stop
@@ -55,14 +56,12 @@ evalStmt env (WhileStmt exp st) = do
                                        else evalStmt env st >> evalStmt env (WhileStmt exp st)
                                     else return Nil
 
--- Verificar o break
 evalStmt env (DoWhileStmt st exp) = do
                                      evalStmt env st
                                      resultExp <- evalExpr env exp
                                      if ((boolAux resultExp) == True) then evalStmt env (DoWhileStmt st exp)  
                                      else return Nil 
-
--- Verificar casos que ocorrem o break e "corrigir"
+-- Break Não Funcionando
 evalStmt env (BreakStmt m) = return Stop
  --
  --   let (v1,e1) =                                                             
