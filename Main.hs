@@ -64,6 +64,16 @@ evalStmt env (DoWhileStmt st exp) = do
 
 -- Verificar casos que ocorrem o break e "corrigir"
 evalStmt env (BreakStmt m) = return Stop
+
+evalStmt env (ReturnStmt (Just x)) = evalExpr env x
+evalStmt env (ReturnStmt Nothing) = return Nil
+
+evalStmt env (SwitchStmt exp []) = return Nil
+evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
+                                        resultExp <- evalExpr env exp
+                                        resultExp2 <- evalExpr env exp2
+                                        if (resultExp == resultExp2) then evalStmt env (BlockStmt lst)
+                                        else evalStmt env (SwitchStmt exp xs)
  --
  --   let (v1,e1) =                                                             
 boolAux (Bool b) = b
