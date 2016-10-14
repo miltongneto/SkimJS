@@ -14,6 +14,8 @@ evalExpr :: StateT -> Expression -> StateTransformer Value
 evalExpr env (VarRef (Id id)) = stateLookup env id
 evalExpr env (IntLit int) = return $ Int int
 evalExpr env (BoolLit bool) = return $ Bool bool
+evalExpr env (StringLit string) = return $ String string
+evalExpr env (NullLit) = return Nil
 evalExpr env (InfixExpr op expr1 expr2) = do
     v1 <- evalExpr env expr1
     v2 <- evalExpr env expr2
@@ -80,6 +82,8 @@ evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
                                         resultExp2 <- evalExpr env exp2
                                         if (resultExp == resultExp2) then evalStmt env (BlockStmt lst)
                                         else evalStmt env (SwitchStmt exp xs)
+
+evalStmt env (ThrowStmt exp) = evalExpr env exp
 
 boolAux (Bool b) = b
 boolAux (Int i) | i == 0 = False
