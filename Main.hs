@@ -27,7 +27,10 @@ evalExpr env (AssignExpr OpAssign (LVar var) expr) = do
 
 --feitas por nos
 evalExpr env (ArrayLit []) = return Nil
-evalExpr env (ArrayLit (x:xs)) = evalExpr env x >> evalExpr env (ArrayLit xs)
+evalExpr env (ArrayLit (x:xs)) = do
+                                   result <- evalExpr env x
+                                   addLista (boolAux result) evalExpr env (ArrayLit xs)
+--evalExpr env x >> evalExpr env (ArrayLit xs)
 
 evalStmt :: StateT -> Statement -> StateTransformer Value
 evalStmt env EmptyStmt = return Nil
@@ -93,6 +96,19 @@ evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
                                         else evalStmt env (SwitchStmt exp xs)
 
 evalStmt env (ThrowStmt exp) = evalExpr env exp
+
+data Listas a = [] | a:[a]
+
+addLista :: a -> Listas -> Listas a
+addLista a l = (a:l) 
+
+--somaListas :: Listas -> Listas -> Listas
+--somaListas [] []         = []
+--somaListas l1 []         = l1
+--somaListas [] l2         = l2
+--somaListas (x:xs) (y:ys) = [x+y] ++ somaListas xs ys
+
+
 
 boolAux (Bool b) = b
 boolAux (Int i) | i == 0 = False
