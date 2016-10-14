@@ -25,6 +25,10 @@ evalExpr env (AssignExpr OpAssign (LVar var) expr) = do
     e <- evalExpr env expr
     setVar var e
 
+--feitas por nos
+evalExpr env (ArrayLit []) = return Nil
+evalExpr env (ArrayLit (x:xs)) = evalExpr env x >> evalExpr env (ArrayLit xs)
+
 evalStmt :: StateT -> Statement -> StateTransformer Value
 evalStmt env EmptyStmt = return Nil
 evalStmt env (VarDeclStmt []) = return Nil
@@ -70,9 +74,12 @@ evalStmt env (DoWhileStmt st exp) = do
                                          if ((boolAux resultExp) == True) then evalStmt env (DoWhileStmt st exp)  
                                          else return Nil 
 
+
+
 -- Verificar casos que ocorrem o break e "corrigir"
 evalStmt env (BreakStmt m) = return Stop
---evalStmt env (ContinueStmt (Just x)) = 
+
+--nao precisa, mas vo deixar pq eu fiz
 evalStmt env (ContinueStmt Nothing) = return Continue
 
 evalStmt env (ReturnStmt (Just x)) = evalExpr env x

@@ -13,7 +13,7 @@ import Value
 evalExpr :: StateT -> Expression -> StateTransformer Value
 evalExpr env (VarRef (Id id)) = stateLookup env id
 evalExpr env (IntLit int) = return $ Int int
-evalExpr env (BoolLit bool) = return $ Bool bool
+evalExpr env (BoolLit bool) = return $ Bool bool	
 evalExpr env (StringLit string) = return $ String string
 evalExpr env (NullLit) = return Nil
 evalExpr env (InfixExpr op expr1 expr2) = do
@@ -24,6 +24,9 @@ evalExpr env (AssignExpr OpAssign (LVar var) expr) = do
     stateLookup env var -- crashes if the variable doesn't exist
     e <- evalExpr env expr
     setVar var e
+
+--feitas por nos
+evalExpr env (ArrayLit (x:xs)) = evalExpr env x >> evalExpr env (ArrayLit xs)
 
 evalStmt :: StateT -> Statement -> StateTransformer Value
 evalStmt env EmptyStmt = return Nil
@@ -70,8 +73,13 @@ evalStmt env (DoWhileStmt st exp) = do
                                          if ((boolAux resultExp) == True) then evalStmt env (DoWhileStmt st exp)  
                                          else return Nil 
 
+
+
 -- Verificar casos que ocorrem o break e "corrigir"
 evalStmt env (BreakStmt m) = return Stop
+
+--nao precisa, mas vo deixar pq eu fiz
+evalStmt env (ContinueStmt Nothing) = return Continue
 
 evalStmt env (ReturnStmt (Just x)) = evalExpr env x
 evalStmt env (ReturnStmt Nothing) = return Nil

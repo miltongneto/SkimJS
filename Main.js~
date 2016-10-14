@@ -1,7 +1,3 @@
-var x = 0;
-do
-{
-	continue;
-	break;
-
-} while (x < 10);
+var a = [];
+var b = "asd";
+var c = ["asd", false, 123];
