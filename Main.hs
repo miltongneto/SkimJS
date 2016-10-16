@@ -26,10 +26,10 @@ evalExpr env (AssignExpr OpAssign (LVar var) expr) = do
     setVar var e
 
 --feitas por nos
-evalExpr env (ArrayLit []) = return Nil
-evalExpr env (ArrayLit (x:xs)) = do
-                                   result <- evalExpr env x
-                                   addLista (boolAux result) evalExpr env (ArrayLit xs)
+--evalExpr env (ArrayLit []) = return Nil
+--evalExpr env (ArrayLit (x:xs)) = do
+--                                   result <- evalExpr env x
+--                                   addLista (boolAux result) evalExpr env (ArrayLit xs)
 --evalExpr env x >> evalExpr env (ArrayLit xs)
 
 evalStmt :: StateT -> Statement -> StateTransformer Value
@@ -51,10 +51,11 @@ evalStmt env (IfStmt exp st1 st2) = do
                                                             
 evalStmt env (BlockStmt []) = return Nil
 evalStmt env (BlockStmt (h:t)) = do
-                                   v1 <- evalStmt env h
-                                   if (v1 == Stop) then return Stop
-                                   else if (v1 == Continue) then return Continue
-                                   else evalStmt env (BlockStmt t) 
+                                   case h of BreakStmt Nothing -> return Stop
+                                             ReturnStmt x-> do
+                                                              r <- evalStmt env h
+                                                              return r 
+                                             otherwise -> evalStmt env (BlockStmt t) 
                                   
 evalStmt env (WhileStmt exp st) = do
                                     resultExp <- evalExpr env exp
@@ -85,8 +86,8 @@ evalStmt env (BreakStmt m) = return Stop
 --nao precisa, mas vo deixar pq eu fiz
 evalStmt env (ContinueStmt Nothing) = return Continue
 
-evalStmt env (ReturnStmt (Just x)) = evalExpr env x
-evalStmt env (ReturnStmt Nothing) = return Nil
+evalStmt env (ReturnStmt (Just x)) = return Retorno
+evalStmt env (ReturnStmt Nothing) = return Retorno
 
 evalStmt env (SwitchStmt exp []) = return Nil
 evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
@@ -97,10 +98,25 @@ evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
 
 evalStmt env (ThrowStmt exp) = evalExpr env exp
 
-data Listas a = [] | a:[a]
+--evalStmt env (FunctionStmt s args sts) = 
 
-addLista :: a -> Listas -> Listas a
-addLista a l = (a:l) 
+
+data Lista a = Nil | Cons a (Lista a) deriving (Show)
+
+headLista (Cons a l) = a
+
+tailLista Nil = Nil
+tailLista (Cons a l) = l
+
+concatLista (Nil) l = l
+concatLista (Cons a1 t) l2 = Cons a1 (concatLista t l2)  
+
+len (Nil) = 0
+len (Cons a l) = 1 + len l
+
+conc [] l = l
+conc (x:xs) l = x:conc xs l
+
 
 --somaListas :: Listas -> Listas -> Listas
 --somaListas [] []         = []

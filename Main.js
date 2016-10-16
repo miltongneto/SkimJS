@@ -1,3 +1,7 @@
-var a = [];
-var b = "asd";
-var c = ["asd", "allysin", "123"];
+function t (a){}
+function teste (a,b){
+	t(a);
+}
+var x = function m(a){
+	var y = 10;
+}

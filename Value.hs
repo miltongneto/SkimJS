@@ -7,6 +7,7 @@ data Value = Bool Bool
     | Nil
     | Stop
     | Continue
+    | Retorno
     deriving (Eq)
 
 --
