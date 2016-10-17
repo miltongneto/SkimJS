@@ -1,7 +1,2 @@
-function t (a){}
-function teste (a,b){
-	t(a);
-}
-var x = function m(a){
-	var y = 10;
-}
+var a = ["allyson", "manoel", "cara", 5, false];
+var b = [1, 2, 3, 4];

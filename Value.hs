@@ -8,11 +8,13 @@ data Value = Bool Bool
     | Stop
     | Continue
     | Retorno
+    | Lista [Value]
     deriving (Eq)
-
+ 
 --
 -- Pretty Printer
 --
+
 
 instance Show Value where 
   show (Bool True) = "true"
@@ -21,6 +23,13 @@ instance Show Value where
   show (String str) = "\"" ++ str ++ "\""
   show (Var name) = name
   show Nil = "undefined"
+  show (Lista l) = "[" ++ (showLista (Lista l)) ++ "]"
+
+showLista :: Value -> String
+showLista (Lista []) = ""
+showLista (Lista [b]) = show b
+showLista (Lista (b:bs)) = (show b) ++ ", " ++ showLista (Lista bs)
+
 
 --instance Eq Value where
 --  (Bool b1) == (Bool b2) = b1 == b2
