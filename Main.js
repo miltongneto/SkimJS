@@ -1,8 +1,7 @@
-var a = ["allyson", "manoel", "cara", 5, false];
-var b = [1, 2, 3, 4];
-var c = [a, b];
+var a = [1,2];
+var b = [3, 4];
 
-a.tail;
+a.concat(b);   
 
 //var i = 0;
 //for (var x in a)

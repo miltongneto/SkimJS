@@ -32,12 +32,15 @@ evalExpr env (ArrayLit l) = evalList env l (Lista [])
 
 ---evalExpr env (ArrayLit (x:xs)) = evalExpr env x >> evalExpr env (ArrayLit xs)
 
-evalExpr env (CallExpr (DotRef exp (Id id)) e) = do {
+evalExpr env (CallExpr (DotRef exp (Id id)) (e:es)) = do {
                                   c<-evalExpr env exp;
                                   case id of 
                                       "head" -> myHead env c
                                       "tail" -> return $ myTail env c
-                                      "concat" -> myConcat env c e
+                                      "concat" -> do
+                                      l <- evalExpr env e
+                                      myConcat env c l
+                                  
                                   }
 
 evalExpr env (DotRef exp (Id id)) = do {
@@ -54,16 +57,13 @@ evalList env (x:xs) (Lista l) = do
                                   lis <- evalExpr env x
                                   evalList env xs (Lista (l++[lis]))
 
+
 myHead env (Lista []) = return Nil
 myHead env (Lista (x:xs)) = return x
 
 myTail env (Lista (x:xs)) = (Lista xs)
 
-myConcat env [] (Lista l2) = return (Lista l2)
-myConcat env (x:xs) (Lista l2) = do
-                                    c <- evalExpr env x
-                                    (Lista l) <- myConcat env xs c
-                                    return $ [l2++l]
+myConcat env (Lista l1) (Lista l2) = return (Lista (l1++l2))
 
 --somaListas :: Listas -> Listas -> Listas
 --somaListas [] []         = []
