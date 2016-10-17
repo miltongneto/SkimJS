@@ -32,6 +32,16 @@ evalExpr env (AssignExpr OpAssign (LVar var) expr) = do
 --                                   addLista (boolAux result) evalExpr env (ArrayLit xs)
 --evalExpr env x >> evalExpr env (ArrayLit xs)
 
+evalExpr env (CallExpr (VarRef (Id name)) params) = do 
+                                                      f <- stateLookup env name
+                                                      case f of
+                                                          (Function id args sts) -> do
+                                                              evalStmt env (BlockStmt sts)
+
+                                                      
+--createLocalVar var val = ST $ \s -> (val, (insert var val (head s)):(tail s))
+
+
 evalStmt :: StateT -> Statement -> StateTransformer Value
 evalStmt env EmptyStmt = return Nil
 evalStmt env (VarDeclStmt []) = return Nil
@@ -86,8 +96,10 @@ evalStmt env (BreakStmt m) = return Stop
 --nao precisa, mas vo deixar pq eu fiz
 evalStmt env (ContinueStmt Nothing) = return Continue
 
-evalStmt env (ReturnStmt (Just x)) = return Retorno
-evalStmt env (ReturnStmt Nothing) = return Retorno
+evalStmt env (ReturnStmt (Just x)) = do
+                                       result <- evalExpr env x
+                                       return (Retorno result) 
+evalStmt env (ReturnStmt Nothing) = return (Retorno Nil)
 
 evalStmt env (SwitchStmt exp []) = return Nil
 evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
@@ -98,20 +110,22 @@ evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
 
 evalStmt env (ThrowStmt exp) = evalExpr env exp
 
---evalStmt env (FunctionStmt s args sts) = 
+evalStmt env (FunctionStmt (Id name) args sts) = do
+                                                   let f = Function (Id name) args sts in ST $ (\s -> (f, insert name f s))
 
+                                                  
 
-data Lista a = Nil | Cons a (Lista a) deriving (Show)
+data Lista a = Nill | Cons a (Lista a) deriving (Show)
 
 headLista (Cons a l) = a
 
-tailLista Nil = Nil
+tailLista Nill = Nill
 tailLista (Cons a l) = l
 
-concatLista (Nil) l = l
+concatLista (Nill) l = l
 concatLista (Cons a1 t) l2 = Cons a1 (concatLista t l2)  
 
-len (Nil) = 0
+len (Nill) = 0
 len (Cons a l) = 1 + len l
 
 conc [] l = l
@@ -124,7 +138,8 @@ conc (x:xs) l = x:conc xs l
 --somaListas [] l2         = l2
 --somaListas (x:xs) (y:ys) = [x+y] ++ somaListas xs ys
 
-
+pushScope :: StateTransformer Value
+pushScope = ST $ \s -> (Lista, (Map.empty):s)
 
 boolAux (Bool b) = b
 boolAux (Int i) | i == 0 = False
@@ -189,7 +204,7 @@ setVar var val = ST $ \s -> (val, insert var val s)
 -- Types and boilerplate
 --
 
-type StateT = Map String Value
+type StateT = [Map String Value]
 data StateTransformer t = ST (StateT -> (t, StateT))
 
 instance Monad StateTransformer where

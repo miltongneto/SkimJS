@@ -1,7 +1,6 @@
-function t (a){}
-function teste (a,b){
-	t(a);
+var x = 10;
+function t (){
+	var y = 1;
+	return;
 }
-var x = function m(a){
-	var y = 10;
-}
+t();
