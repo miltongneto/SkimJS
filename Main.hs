@@ -28,13 +28,49 @@ evalExpr env (AssignExpr OpAssign (LVar var) expr) = do
 --feitas por nos
 
 evalExpr env (ArrayLit []) = return (Lista [])
---evalExpr env (ArrayLit (x:xs)) = evalExpr env x >> evalExpr env (ArrayLit xs)
 evalExpr env (ArrayLit l) = evalList env l (Lista [])
+
+---evalExpr env (ArrayLit (x:xs)) = evalExpr env x >> evalExpr env (ArrayLit xs)
+
+evalExpr env (CallExpr (DotRef exp (Id id)) e) = do {
+                                  c<-evalExpr env exp;
+                                  case id of 
+                                      "head" -> myHead env c
+                                      "tail" -> return $ myTail env c
+                                      "concat" -> myConcat env c e
+                                  }
+
+evalExpr env (DotRef exp (Id id)) = do {
+                                  c<-evalExpr env exp;
+                                  case id of 
+                                      "head" -> myHead env c
+                                      "tail" -> return $ myTail env c
+                                               --"concat" -> return $ myConcat env (Lista c) (Lista (return y))
+                                  }
+
 
 evalList env [] (Lista l) = return (Lista l)
 evalList env (x:xs) (Lista l) = do
                                   lis <- evalExpr env x
                                   evalList env xs (Lista (l++[lis]))
+
+myHead env (Lista []) = return Nil
+myHead env (Lista (x:xs)) = return x
+
+myTail env (Lista (x:xs)) = (Lista xs)
+
+myConcat env [] (Lista l2) = return (Lista l2)
+myConcat env (x:xs) (Lista l2) = do
+                                    c <- evalExpr env x
+                                    (Lista l) <- myConcat env xs c
+                                    return $ [l2++l]
+
+--somaListas :: Listas -> Listas -> Listas
+--somaListas [] []         = []
+--somaListas l1 []         = l1
+--somaListas [] l2         = l2
+--somaListas (x:xs) (y:ys) = [x+y] ++ somaListas xs ys
+
 
 evalStmt :: StateT -> Statement -> StateTransformer Value
 evalStmt env EmptyStmt = return Nil
@@ -99,36 +135,6 @@ evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
                                         else evalStmt env (SwitchStmt exp xs)
 
 evalStmt env (ThrowStmt exp) = evalExpr env exp
-
-                                              
-
-
-
---evalStmt env (FunctionStmt s args sts) = 
-
-
---headLista (Cons a l) = a
-
---tailLista Nil = Nil
---tailLista (Cons a l) = l
-
---concatLista (Nil) l = l
---concatLista (Cons a1 t) l2 = Cons a1 (concatLista t l2)  
-
---len (Nil) = 0
---len (Cons a l) = 1 + len l
-
---conc [] l = l
---conc (x:xs) l = x:conc xs l
-
-
---somaListas :: Listas -> Listas -> Listas
---somaListas [] []         = []
---somaListas l1 []         = l1
---somaListas [] l2         = l2
---somaListas (x:xs) (y:ys) = [x+y] ++ somaListas xs ys
-
-
 
 boolAux (Bool b) = b
 boolAux (Int i) | i == 0 = False
