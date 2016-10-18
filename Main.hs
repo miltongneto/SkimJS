@@ -20,7 +20,6 @@ evalExpr env (NullLit) = return Nil
 evalExpr env (InfixExpr op expr1 expr2) = do
     v1 <- evalExpr env expr1
     v2 <- evalExpr env expr2
-    infixOp env op v1 v2
     case v1 of
         (Retorno va) -> do
             case v2 of
@@ -46,13 +45,18 @@ evalExpr env (ArrayLit l) = evalList env l (Lista [])
 
 ---evalExpr env (ArrayLit (x:xs)) = evalExpr env x >> evalExpr env (ArrayLit xs)
 
---evalExpr env (CallExpr (DotRef exp (Id id)) e) = do {
---                                  c<-evalExpr env exp;
-  --                                case id of 
-    --                                  "head" -> myHead env c
-      --                                "tail" -> return $ myTail env c
-        --                              "concat" -> myConcat env c e
-          --                        }
+evalExpr env (CallExpr (DotRef exp (Id id)) params) =   do
+                                                         lista <- evalExpr env exp
+                                                         case lista of
+                                                            Lista array -> do
+                                                                            case id of 
+                                                                                "head" -> myHead env lista
+                                                                                "tail" -> return $ myTail env lista
+                                                                                "concat" -> myConcat env array params
+                                                                                "len" -> len env lista
+                                                                              
+                                                          
+
 
 --evalExpr env (CallExpr ())
 
@@ -71,9 +75,17 @@ evalExpr env (DotRef exp (Id id)) = do {
                                   case id of 
                                       "head" -> myHead env c
                                       "tail" -> return $ myTail env c
-                                               --"concat" -> return $ myConcat env (Lista c) (Lista (return y))
+                                      "len" -> len env c
                                   }
+evalExpr env (BracketRef expr1 expr2) = do
+    evaluedExpr1 <- evalExpr env expr1
+    evaluedExpr2 <- evalExpr env expr2
+    getElement env evaluedExpr1 evaluedExpr2
 
+getElement env (Lista []) (Int n) = return Nil
+getElement env (Lista (l:ls)) (Int 0) = return l
+getElement env (Lista (l:ls)) (Int n) = do
+    getElement env (Lista ls) (Int (n-1))
 
 evalList env [] (Lista l) = return (Lista l)
 evalList env (x:xs) (Lista l) = do
@@ -84,6 +96,19 @@ myHead env (Lista []) = return Nil
 myHead env (Lista (x:xs)) = return x
 
 myTail env (Lista (x:xs)) = (Lista xs)
+
+len env (Lista []) = return (Int 0)
+len env (Lista l) = return (Int (lenn l))
+
+lenn l = foldr (soma1) 0 l
+soma1 x y = 1 + y 
+
+myConcat env l [] = return (Lista l)
+myConcat env l1 (p:ps) = do
+  result <- evalExpr env p 
+  case result of
+    (Lista l2) -> myConcat env (l1++l2) ps
+    v -> myConcat env (l1 ++ [v]) ps
 
 --myConcat env [] (Lista l2) = return (Lista l2)
 --myConcat env (x:xs) (Lista l2) = do
@@ -181,7 +206,11 @@ evalStmt env (SwitchStmt exp []) = return Nil
 evalStmt env (SwitchStmt exp ((CaseClause exp2 lst):xs)) = do
                                         resultExp <- evalExpr env exp
                                         resultExp2 <- evalExpr env exp2
-                                        if (resultExp == resultExp2) then evalStmt env (BlockStmt lst)
+                                        if (resultExp == resultExp2) then do
+                                                                            result <- evalStmt env (BlockStmt lst)
+                                                                            case result of
+                                                                               Stop -> return (Retorno Nil)
+                                                                               _ -> return result
                                         else evalStmt env (SwitchStmt exp xs)
 
 evalStmt env (ThrowStmt exp) = evalExpr env exp
@@ -237,18 +266,24 @@ infixOp env OpNEq  (Bool v1) (Bool v2) = return $ Bool $ v1 /= v2
 infixOp env OpLAnd (Bool v1) (Bool v2) = return $ Bool $ v1 && v2
 infixOp env OpLOr  (Bool v1) (Bool v2) = return $ Bool $ v1 || v2
 
+{- infixOp env op (Var id1) (Var id2) = do
+                         var1 <- stateLookup env id1
+                         var2 <- stateLookup env id2
+                         case var1 of
+                              ErroVar s -> 
+-}
 -- Testar e ajustar
-{-infixOp env op (Var id) v2 = do
+infixOp env op (Var id) v2 = do
                            var <- stateLookup env id
                            case var of
-                                ErroVar s -> ST $ \s -> (ErroVar id, s)
-                                val -> infixOp env op val v2
+                                ErroVar x -> ST $ \s -> (Int 12, s) 
+                                val -> ST $ \s -> (Int 10, s) --infixOp env op val v2
 infixOp env op v1 (Var id) = do
                            var <- stateLookup env id
                            case var of
-                                ErroVar s -> ST $ \s -> (ErroVar id, s)
+                                ErroVar x -> ST $ \s -> (ErroVar id, s)
                                 val -> infixOp env op v1 val
--}
+
 --
 -- Environment and auxiliary functions
 --
