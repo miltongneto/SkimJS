@@ -46,7 +46,7 @@ evalExpr env (ArrayLit l) = evalList env l (Lista [])
 
 ---evalExpr env (ArrayLit (x:xs)) = evalExpr env x >> evalExpr env (ArrayLit xs)
 
-<<<<<<< HEAD
+
 evalExpr env (CallExpr (DotRef exp (Id id)) (e:es)) = do {
                                   c<-evalExpr env exp;
                                   case id of 
@@ -57,16 +57,6 @@ evalExpr env (CallExpr (DotRef exp (Id id)) (e:es)) = do {
                                       myConcat env c l
                                   
                                   }
-=======
---evalExpr env (CallExpr (DotRef exp (Id id)) e) = do {
---                                  c<-evalExpr env exp;
-  --                                case id of 
-    --                                  "head" -> myHead env c
-      --                                "tail" -> return $ myTail env c
-        --                              "concat" -> myConcat env c e
-          --                        }
-
---evalExpr env (CallExpr ())
 
 evalExpr env (CallExpr (VarRef (Id name)) params) = do 
                                                       f <- stateLookup env name
@@ -77,7 +67,6 @@ evalExpr env (CallExpr (VarRef (Id name)) params) = do
                                                               result <- evalStmt env (BlockStmt sts)
                                                               popScope
                                                               return result
->>>>>>> 14d984ffe163c7189f9df65390d0170f250b5097
 
 evalExpr env (DotRef exp (Id id)) = do {
                                   c<-evalExpr env exp;
@@ -105,21 +94,8 @@ myHead env (Lista (x:xs)) = return x
 
 myTail env (Lista (x:xs)) = (Lista xs)
 
-<<<<<<< HEAD
-myConcat env (Lista l1) (Lista l2)  = return (Lista (l1++l2))
-=======
---myConcat env [] (Lista l2) = return (Lista l2)
---myConcat env (x:xs) (Lista l2) = do
-  --                                  c <- evalExpr env x
-    --                                (Lista l) <- myConcat env xs c
-      --                              return $ [l2++l]
->>>>>>> 14d984ffe163c7189f9df65390d0170f250b5097
 
---somaListas :: Listas -> Listas -> Listas
---somaListas [] []         = []
---somaListas l1 []         = l1
---somaListas [] l2         = l2
---somaListas (x:xs) (y:ys) = [x+y] ++ somaListas xs ys
+myConcat env (Lista l1) (Lista l2)  = return (Lista (l1++l2))
 
 inserirLocalVar :: String -> Value -> StateTransformer Value                                                    
 inserirLocalVar var v = ST $ \(h:t) -> (v, (insert var v h):t)

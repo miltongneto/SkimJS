@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var a = [1,2];
 var b = [3, 4];
 
@@ -9,7 +8,7 @@ a.concat(b);
 //{
 //    i++;
 //} 
-=======
+
 function f(n){
 	if(n>=5){
 		return n;
@@ -19,4 +18,4 @@ function f(n){
 	}
 }
 f(2);
->>>>>>> 14d984ffe163c7189f9df65390d0170f250b5097
+
