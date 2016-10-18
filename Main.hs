@@ -209,7 +209,7 @@ evalStmt env (ForStmt ini cond inc st) = do
                                                               (Nothing) -> evalStmt env (ForStmt ini cond inc st)
                                                               (Just x) -> do 
                                                                             s <- evalExpr env x
-                                                                            evalStmt env (ForStmt ini cond inc s)
+                                                                            evalStmt env (ForStmt NoInit cond inc st)
                                               (Just x) -> do
                                                             (Bool c) <- evalExpr env x
                                                             if c then
@@ -223,7 +223,7 @@ evalStmt env (ForStmt ini cond inc st) = do
                                                                             (Nothing) -> evalStmt env (ForStmt ini cond inc st)
                                                                             (Just x) -> do 
                                                                                           s <-  evalExpr env x
-                                                                                          evalStmt env (ForStmt ini cond inc s)
+                                                                                          evalStmt env (ForStmt ini cond inc st)
                                                               else return Nil                              
 
 forIni env (NoInit) = return Nil
