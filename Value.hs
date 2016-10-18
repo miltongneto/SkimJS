@@ -33,7 +33,7 @@ instance Show Value where
   show (Lista l) = "[" ++ (showLista (Lista l)) ++ "]"
   show (ErroVar s) = "Variavel " ++ (show s) ++ "nao definida"
   show (Erro) = "Erro"
-showLista :: Value -> String
+showLista :: Vaglue -> String
 showLista (Lista []) = ""
 showLista (Lista [b]) = show b
 showLista (Lista (b:bs)) = (show b) ++ ", " ++ showLista (Lista bs)

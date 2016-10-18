@@ -1,0 +1,275 @@
+[33mcommit 93d1f7a24a3592e23b561673cbf0505e70d0eeba[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Tue Oct 18 09:21:49 2016 -0300
+
+    erros q faltou
+
+[33mcommit 2fc4ca743e516ade99b71394e47782f979aed4b0[m
+Merge: 69d22ec 14d984f
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Tue Oct 18 08:59:14 2016 -0300
+
+    ajustes para merge funcionar
+
+[33mcommit 69d22ece0d9d00a5b7f10569e49bdfdd697a3fa9[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Tue Oct 18 08:56:51 2016 -0300
+
+    pequenos ajustes
+
+[33mcommit 14d984ffe163c7189f9df65390d0170f250b5097[m
+Author: miltongneto <mvgn@cin.ufpe.br>
+Date:   Tue Oct 18 05:46:25 2016 -0200
+
+    Adicao de scopo, variaveis locais e globais, funcoes e algumas correcoes nos metodos
+
+[33mcommit 57cdc944a03858a815b25e342dee149e2111b8df[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Mon Oct 17 20:18:50 2016 -0300
+
+    myConcat funcionando
+
+[33mcommit 27feb3a5eecf44b2dbdb05bcff9d57e7d2292f7e[m
+Merge: 4837fde 8ae1035
+Author: miltongneto <mvgn@cin.ufpe.br>
+Date:   Mon Oct 17 19:56:48 2016 -0200
+
+    merge de conflitos
+
+[33mcommit 4837fde9f7e8a349c0577b70594b7e30c09e3779[m
+Author: miltongneto <mvgn@cin.ufpe.br>
+Date:   Mon Oct 17 19:49:09 2016 -0200
+
+    tentativa de merge
+
+[33mcommit 8ae103576fa6cb9f927af51478830800706cd3ac[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Mon Oct 17 18:19:11 2016 -0300
+
+    versão mais recente do codigo
+
+[33mcommit 55d9fd9b8f092f71ecb3101021b245f09648ab84[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Mon Oct 17 13:41:31 2016 -0300
+
+    arrayLit FUNCIONANDO
+
+[33mcommit b458487a77bd078fd49384b283c966820f303d4e[m
+Author: miltongneto <mvgn@cin.ufpe.br>
+Date:   Sun Oct 16 15:34:29 2016 -0200
+
+    Lista e metodos da Lista
+
+[33mcommit 025c6614e7d132cfed75aac5c5ce13dac3a5b5f9[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Fri Oct 14 17:05:36 2016 -0300
+
+    correções listas
+
+[33mcommit 55e838c390c7daa56b14c28e6e4dde9ec84d090e[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Fri Oct 14 16:00:56 2016 -0300
+
+    add ArrayLit
+
+[33mcommit 984b82463b7752de0dee1169408720ff4438a7ac[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Fri Oct 14 14:55:24 2016 -0300
+
+    continue adicionado ao while e do while
+
+[33mcommit ca981d6de0f8ce202a2164fa592ef5983a50b285[m
+Merge: df16364 74314f8
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Fri Oct 14 14:45:31 2016 -0300
+
+    resolvendo problemas de merge
+
+[33mcommit df163641e046433e594cf3fb93f31fedd082ca7e[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Fri Oct 14 14:40:32 2016 -0300
+
+    break adicionado ao do while
+
+[33mcommit 74314f8316d92868b072003086f319df07c23344[m
+Author: mlrbc <mlrbc@cin.ufpe.br>
+Date:   Fri Oct 14 12:57:20 2016 -0300
+
+    adição expressão string,null e stm throw
+
+[33mcommit fc2cf034494e1a2a7501496a177d7519e2b8b15c[m
+Merge: d59934b 4078ab6
+Author: Allyson Manoel <amnv@cin.ufpe.br>
+Date:   Thu Oct 13 23:55:39 2016 -0300
+
+    Merge pull request #2 from miltongneto/return-e-switch
+    
+    adição return e switch
+
+[33mcommit 4078ab658185cf781df97e4bf7fa0120b46e2f64[m
+Author: mlrbc <mlrbc@cin.ufpe.br>
+Date:   Thu Oct 13 23:40:14 2016 -0300
+
+    adição return e switch
+
+[33mcommit d59934b13485dbc117dbfab07184d0af9ba203c6[m
+Author: amnv <amnv@cin.ufpe.br>
+Date:   Thu Oct 13 21:18:29 2016 -0300
+
+    adicinou break
+
+[33mcommit 788adb4ccd708440557e045df3bcd1b62f313b9b[m
+Merge: 9e68954 56c19e1
+Author: miltongneto <mvgn@cin.ufpe.br>
+Date:   Wed Oct 12 22:23:46 2016 -0300
+
+    Merge pull request #1 from mlrbc/patch-1
+    
+    Adição de While, do while, break nao funcionando comentado
+
+[33mcommit 56c19e10bba66221c85a032288b946d499272091[m
+Author: mlrbc <mlrbc@cin.ufpe.br>
+Date:   Wed Oct 12 21:47:33 2016 -0300
+
+    Adição de While, do while, break nao funcionando comentado
+
+[33mcommit 9e68954907ba1bf03509d2645adddab70313135a[m
+Author: miltongneto <mvgn@cin.ufpe.br>
+Date:   Wed Oct 12 16:51:02 2016 -0300
+
+    instance Eq Value implementado
+
+[33mcommit 6589f9d214ed91f4f70df4517d1a36805b3eb6dc[m
+Author: miltongneto <mvgn@cin.ufpe.br>
+Date:   Wed Oct 12 16:36:39 2016 -0300
+
+    Funcoes If(single e com else) e blockStmt
+
+[33mcommit fcb0f1b58d1d63848e5cdb8be6d9b9c1cdf44576[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Thu Dec 3 13:10:03 2015 -0300
+
+    Compile our little C shared libraries with -fPIC
+    
+    Position-independent code avoids linking failure.
+
+[33mcommit 7ddd402c49e2eaf00b1acc179b66afa3a85f0aaf[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Thu Dec 3 10:04:55 2015 -0300
+
+    Update Windows build files
+
+[33mcommit 06543da895c30a36b7991cd3fe2e38e0ded98e97[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Thu Dec 3 09:51:39 2015 -0300
+
+    Improve Makefile
+
+[33mcommit f1edd51f6e3dc8f1c20c4d760a75e47c6b3ea59f[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Thu Dec 3 09:53:02 2015 -0300
+
+    Fix missing dependencies with very outdated packages
+    
+    GHC 7.4.1, base 4.5
+
+[33mcommit 923b4ab88b78ae493802fc020f304e114f540a05[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Thu Dec 3 09:00:37 2015 -0300
+
+    Fix compilation with GHC 7.4.1
+
+[33mcommit 9c931493fc6162373a9745db4502ad23ac5dfba6[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Mon Oct 19 13:39:59 2015 -0300
+
+    Remove Value's Error ctor and use Prelude's error
+    
+    There is no need to handle the intepreter errors as a type of Value.
+    Simply call the standard `error` function, which will crash the program.
+    Also, make sure that lazy evaluation won't ignore uses of stateLookup.
+
+[33mcommit 9415f68187b7da1bccb7aa1ba757e48b7126d9c2[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Mon Oct 19 13:33:43 2015 -0300
+
+    Minor fixes
+
+[33mcommit 965867daad047cdf971263cb19c55fec5efd6095[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Wed Oct 14 17:23:29 2015 -0300
+
+    Simplify commands for Windows on README
+
+[33mcommit 6cf6e668eab27851632839878b00facb4e2854dc[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Wed Oct 7 12:43:41 2015 -0300
+
+    Import Applicative to fix building with GHC < 7.10
+
+[33mcommit ce06fb377993d3238781939e4a2bdbf66e4c3519[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Thu Oct 1 21:49:32 2015 -0300
+
+    Implement some basic intepreter features
+    
+    * Variable declaration
+    * Variable assignment
+    * Basic integer and boolean operations
+
+[33mcommit ec7f3fc43db0126401bc9ca2f960d4475666a1c7[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Fri Sep 18 15:26:18 2015 -0300
+
+    Improve README file
+    
+    Added description, HOWTO and license.
+
+[33mcommit 68f1f67a13cf19aa0f98b72fa466d3568852647c[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Fri Sep 18 15:25:31 2015 -0300
+
+    Remove unnecessary Uniplate directory
+
+[33mcommit d8e9303b9da75150393f4ebf055e7bec474e2907[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Fri Sep 18 14:22:11 2015 -0300
+
+    Use GHC to compile fnv.c to avoid link errors
+    
+    GHC 7.8.3 on Windows has problems to link to MinGW-generated object files,
+    depending on the version of GCC. As GHC can compile C files (it bundles
+    the correct version of MinGW with Haskell Platform), let's use it to
+    compile the fnv.c file. And let's do it for all platforms.
+    
+    This is related to http://ghc.haskell.org/trac/ghc/ticket/9080
+
+[33mcommit 7426c62a016b2d69f98d7cb87b800ee61a8717a5[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Fri Sep 18 11:30:10 2015 -0300
+
+    Clean script for Windows
+
+[33mcommit f5da5d40c4794c9d0e775a8e11cf224137723500[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Wed Sep 16 19:13:56 2015 -0300
+
+    Remove position annotations
+
+[33mcommit 1e53208c7ebf8b2862d52a6b67c9595f17d60899[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Wed Sep 16 19:12:51 2015 -0300
+
+    Add .gitignore
+
+[33mcommit e5434256e844873e45e5cce778263de70a994cce[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Wed Sep 16 17:06:11 2015 -0300
+
+    Remove Test directory
+
+[33mcommit 5108212f258e3692787891622213fd0a49ac3d87[m
+Author: Paulo Lieuthier <paulolieuthier@gmail.com>
+Date:   Wed Sep 16 16:45:16 2015 -0300
+
+    First working version
