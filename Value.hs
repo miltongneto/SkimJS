@@ -14,11 +14,7 @@ data Value = Bool Bool
     | Retorno Value
     | Lista [Value]
     | Erro
-      deriving (Eq)
- 
---
--- Pretty Printer
---
+     deriving (Eq)
 
 
 instance Show Value where 
@@ -33,7 +29,8 @@ instance Show Value where
   show (Lista l) = "[" ++ (showLista (Lista l)) ++ "]"
   show (ErroVar s) = "Variavel " ++ (show s) ++ "nao definida"
   show (Erro) = "Erro"
-showLista :: Vaglue -> String
+
+showLista :: Value -> String
 showLista (Lista []) = ""
 showLista (Lista [b]) = show b
 showLista (Lista (b:bs)) = (show b) ++ ", " ++ showLista (Lista bs)

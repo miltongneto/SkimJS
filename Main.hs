@@ -20,16 +20,15 @@ evalExpr env (NullLit) = return Nil
 evalExpr env (InfixExpr op expr1 expr2) = do
     v1 <- evalExpr env expr1
     v2 <- evalExpr env expr2
-    infixOp env op v1 v2
     case v1 of
-        (Retorno va) -> do
-            case v2 of
-                (Retorno vb) -> infixOp env op va vb
-                _ -> infixOp env op va v2
-        _ -> do
-            case v2 of
-                (Retorno vb) -> infixOp env op v1 vb
-                _ -> infixOp env op v1 v2
+      (Retorno va) -> do
+         case v2 of
+            (Retorno vb) -> infixOp env op va vb
+            _ -> infixOp env op va v2
+      _ -> do
+         case v2 of
+            (Retorno vb) -> infixOp env op v1 vb
+            _ -> infixOp env op v1 v2
 
 -- Fazer AssignExpr para os outros casos
 evalExpr env (AssignExpr OpAssign (LVar var) expr) = do
@@ -38,6 +37,8 @@ evalExpr env (AssignExpr OpAssign (LVar var) expr) = do
     case find of
       ErroVar var -> inserirGlobalVar var e
       _ -> setVar var e
+
+
 
 --feitas por nos
 
@@ -53,10 +54,12 @@ evalExpr env (CallExpr (DotRef exp (Id id)) (e:es)) = do {
                                       "head" -> myHead env c
                                       "tail" -> return $ myTail env c
                                       "concat" -> do
-                                      l <- evalExpr env e
-                                      myConcat env c l
-                                  
-                                  }
+                                        l <- evalExpr env e
+                                        myConcat env c l
+                                      "equals" -> do
+                                        l <- evalExpr env e
+                                        return $ areIquals env c l
+                                 }
 
 evalExpr env (CallExpr (VarRef (Id name)) params) = do 
                                                       f <- stateLookup env name
@@ -83,12 +86,15 @@ evalList env (x:xs) (Lista l) = do
                                   evalList env xs (Lista (l++[lis]))
 
 
-areIquals env [] (Lista l) = False
-areIquals env (Lista l) [] = False
-areIquals env [] [] = True
-areIquals env (Lista (x:xs)) (Lista (y:ys)) | x == y = areIquals env (Lista xs) (Lista ys)
-                                            | otherwise = False
+areIquals env (Lista l1) (Lista l2) = Bool (l1 == l2)
 
+--areIquals env (Lista []) (Lista l) = return (Bool False)
+--areIquals env (Lista l) (Lista []) = return (Bool False)
+--areIquals env (Lista []) (Lista []) = return (Bool True)
+--areIquals env (Lista (x:xs)) (Lista (y:ys)) = do 
+  --                                               if (a == b) then 
+  --                                               areIquals env (Lista xs) (Lista ys)
+  --                                              else return (Bool False)
 myHead env (Lista []) = return Nil
 myHead env (Lista (x:xs)) = return x
 
@@ -190,7 +196,43 @@ evalStmt env (FunctionStmt (Id name) args sts) = inserirGlobalVar name (Function
                                                   -- do
                                                    --  let f = Function (Id name) args sts in ST $ (\s -> (f, insert name f s))
 
-                                                  
+evalStmt env (ForStmt ini cond inc st) = do
+                                            forIni env ini
+                                            case cond of
+                                              (Nothing) -> do
+                                                  s <- evalStmt env st
+                                                  case s of
+                                                    (Stop) -> return Nil
+                                                    (Retorno x) -> return x
+                                                    _ -> do 
+                                                            case inc of
+                                                              (Nothing) -> evalStmt env (ForStmt ini cond inc st)
+                                                              (Just x) -> do 
+                                                                            s <- evalExpr env x
+                                                                            evalStmt env (ForStmt ini cond inc s)
+                                              (Just x) -> do
+                                                            (Bool c) <- evalExpr env x
+                                                            if c then
+                                                              do
+                                                                s <- evalStmt env st
+                                                                case s of
+                                                                  (Stop) -> return Nil
+                                                                  (Retorno x) -> return x
+                                                                  _ -> do 
+                                                                          case inc of
+                                                                            (Nothing) -> evalStmt env (ForStmt ini cond inc st)
+                                                                            (Just x) -> do 
+                                                                                          s <-  evalExpr env x
+                                                                                          evalStmt env (ForStmt ini cond inc s)
+                                                              else return Nil                              
+
+forIni env (NoInit) = return Nil
+forIni env (VarInit []) = return Nil
+forIni env (VarInit (x:xs)) = do
+                                varDecl env x
+                                forIni env (VarInit xs)
+forIni env (ExprInit exp) = evalExpr env exp
+
 --somaListas :: Listas -> Listas -> Listas
 --somaListas [] []         = []
 --somaListas l1 []         = l1
@@ -233,6 +275,7 @@ infixOp env OpGT   (Int  v1) (Int  v2) = return $ Bool $ v1 > v2
 infixOp env OpGEq  (Int  v1) (Int  v2) = return $ Bool $ v1 >= v2
 infixOp env OpEq   (Int  v1) (Int  v2) = return $ Bool $ v1 == v2
 infixOp env OpEq   (Bool v1) (Bool v2) = return $ Bool $ v1 == v2
+infixOp env OpEq    v1  v2 = return $ Bool $ v1 == v2
 infixOp env OpNEq  (Bool v1) (Bool v2) = return $ Bool $ v1 /= v2
 infixOp env OpLAnd (Bool v1) (Bool v2) = return $ Bool $ v1 && v2
 infixOp env OpLOr  (Bool v1) (Bool v2) = return $ Bool $ v1 || v2
