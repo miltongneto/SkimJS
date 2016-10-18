@@ -8,10 +8,12 @@ data Value = Bool Bool
     | Var String
     | Function Id [Id] [Statement] 
     | Nil
+    | ErroVar String
     | Stop
     | Continue
-    | Retorno
+    | Retorno Value
     | Lista [Value]
+    | Erro
       deriving (Eq)
  
 --
@@ -29,7 +31,8 @@ instance Show Value where
   show (Function name args sts)  = "func " ++ show name
   show (Retorno v) = show v
   show (Lista l) = "[" ++ (showLista (Lista l)) ++ "]"
-
+  show (ErroVar s) = "Variavel " ++ (show s) ++ "nao definida"
+  show (Erro) = "Erro"
 showLista :: Value -> String
 showLista (Lista []) = ""
 showLista (Lista [b]) = show b
