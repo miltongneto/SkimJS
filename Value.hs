@@ -1,15 +1,20 @@
 module Value (Value (..)) where
 
+import Language.ECMAScript3.Syntax
+
 data Value = Bool Bool
     | Int Int
     | String String
     | Var String
+    | Function Id [Id] [Statement] 
     | Nil
+    | ErroVar String
     | Stop
     | Continue
-    | Retorno
+    | Retorno Value
     | Lista [Value]
-    deriving (Eq)
+    | Erro
+      deriving (Eq)
  
 --
 -- Pretty Printer
@@ -23,13 +28,15 @@ instance Show Value where
   show (String str) = "\"" ++ str ++ "\""
   show (Var name) = name
   show Nil = "undefined"
+  show (Function name args sts)  = "func " ++ show name
+  show (Retorno v) = show v
   show (Lista l) = "[" ++ (showLista (Lista l)) ++ "]"
-
+  show (ErroVar s) = "Variavel " ++ (show s) ++ "nao definida"
+  show (Erro) = "Erro"
 showLista :: Value -> String
 showLista (Lista []) = ""
 showLista (Lista [b]) = show b
 showLista (Lista (b:bs)) = (show b) ++ ", " ++ showLista (Lista bs)
-
 
 --instance Eq Value where
 --  (Bool b1) == (Bool b2) = b1 == b2
