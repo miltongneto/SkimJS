@@ -1,0 +1,18 @@
+programas js
+
+function quicksort(array)
+    var a1 = [], var a2 = [], var a3 = [];
+    if array.length > 1  
+        pivot = array.head; 
+        for (each x in array) {
+            if x < pivot {
+			 less = less + x;
+            } else if (pivot == x) {
+			 equal = equal + x;
+			} else {
+			  greater = greater + x;
+			}
+		}	
+        quicksort(less)
+        quicksort(greater)
+        array = concat(less, equal, greater)
