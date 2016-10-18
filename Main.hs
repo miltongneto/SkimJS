@@ -48,8 +48,8 @@ evalExpr env (DotRef exp (Id id)) = do {
                                   case id of 
                                       "head" -> myHead env c
                                       "tail" -> return $ myTail env c
-                                               --"concat" -> return $ myConcat env (Lista c) (Lista (return y))
                                   }
+
 
 
 evalList env [] (Lista l) = return (Lista l)
@@ -58,12 +58,18 @@ evalList env (x:xs) (Lista l) = do
                                   evalList env xs (Lista (l++[lis]))
 
 
+areIquals env [] (Lista l) = False
+areIquals env (Lista l) [] = False
+areIquals env [] [] = True
+areIquals env (Lista (x:xs)) (Lista (y:ys)) | x == y = areIquals env (Lista xs) (Lista ys)
+                                            | otherwise = False
+
 myHead env (Lista []) = return Nil
 myHead env (Lista (x:xs)) = return x
 
 myTail env (Lista (x:xs)) = (Lista xs)
 
-myConcat env (Lista l1) (Lista l2) = return (Lista (l1++l2))
+myConcat env (Lista l1) (Lista l2)  = return (Lista (l1++l2))
 
 --somaListas :: Listas -> Listas -> Listas
 --somaListas [] []         = []
